@@ -1,7 +1,8 @@
 const callApi = require('../utils/callApi');
 const db = require('../../db/models');
+const HTTPError = require('../utils/httpError');
 
-const { companies } = db;
+const { Companies } = db;
 
 const saveData = async (urlLink) => {
   try {
@@ -24,13 +25,14 @@ const saveData = async (urlLink) => {
         + index[2].value) / 4;
       const data = {
         companyId: detailsById.id,
+        sector,
         name: detailsById.name,
         tags: detailsById.tags,
         ceo: detailsById.ceo,
         numberEmployees: detailsById.numberEmployees,
         score,
       };
-      await companies.create(data);
+      await Companies.create(data);
     });
     return true;
   } catch (err) {
@@ -38,4 +40,19 @@ const saveData = async (urlLink) => {
   }
 };
 
-module.exports = { saveData };
+const getTopRankedCompanies = async (sector) => {
+  const results = await Companies.findAll({
+    where: {
+      sector,
+    },
+    order: [
+      ['score', 'DESC'],
+    ],
+  });
+  if (!results) {
+    throw new HTTPError('Not found', 404);
+  }
+  return results;
+};
+
+module.exports = { saveData, getTopRankedCompanies };
