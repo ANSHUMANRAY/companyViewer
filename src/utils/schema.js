@@ -5,4 +5,8 @@ const postSchema = joi.object({
   urlLink: joi.string().required(),
 });
 
-module.exports = { postSchema };
+const getSchema = joi.object({
+  sector: joi.string().required(),
+});
+
+module.exports = { postSchema, getSchema };

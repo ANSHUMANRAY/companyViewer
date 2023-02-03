@@ -1,4 +1,5 @@
 const services = require('../services/companies');
+const HTTPError = require('../utils/httpError');
 
 const postData = async (req, res) => {
   try {
@@ -12,4 +13,21 @@ const postData = async (req, res) => {
   }
 };
 
-module.exports = { postData };
+const getData = async (req, res) => {
+  try {
+    const { sector } = req.query;
+    const data = services.getTopRankedCompanies(sector);
+    res.status(200);
+    res.json(data);
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      res.status(error.code);
+      res.json({ message: error.message });
+    } else {
+      res.status(500);
+      res.json({ message: 'Internal server error' });
+    }
+  }
+};
+
+module.exports = { postData, getData };
