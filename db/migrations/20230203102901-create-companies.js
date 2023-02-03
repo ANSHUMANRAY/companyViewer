@@ -12,6 +12,9 @@ module.exports = {
       companyId: {
         type: Sequelize.STRING
       },
+      address: {
+        type: Sequelize.STRING
+      },
       sector: {
         type: Sequelize.STRING
       },

@@ -9,4 +9,14 @@ const getSchema = joi.object({
   sector: joi.string().required(),
 });
 
-module.exports = { postSchema, getSchema };
+const patchSchemaParams = joi.object({
+  id: joi.string().required(),
+});
+
+const patchSchemaRequest = joi.object({
+  ceo: joi.string(),
+  address: joi.string(),
+});
+module.exports = {
+  postSchema, getSchema, patchSchemaParams, patchSchemaRequest,
+};

@@ -19,3 +19,17 @@ describe('getTopRankedCompanies', () => {
     expect(data).toEqual(testValue);
   });
 });
+
+describe('updateData', () => {
+  it('should return true if data updated successfully', async () => {
+    jest.spyOn(Companies, 'update').mockResolvedValue({ a: test });
+    expect(await services.updateData({ a: test }, { id: 2 })).toBe(true);
+  });
+});
+
+describe('updateData error cases', () => {
+  it('should throw error when falsy value is recieved', async () => {
+    jest.spyOn(Companies, 'update').mockResolvedValue(null);
+    await expect(services.updateData({ a: test }, { id: 2 })).rejects.toThrow(new HTTPError('Not found', 404));
+  });
+});

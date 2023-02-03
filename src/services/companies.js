@@ -55,4 +55,13 @@ const getTopRankedCompanies = async (sector) => {
   return results;
 };
 
-module.exports = { saveData, getTopRankedCompanies };
+const updateData = async (data, id) => {
+  const results = await Companies.update({ ...data }, { where: { id } });
+  if (!results) {
+    throw new HTTPError('Not found', 404);
+  } else {
+    return true;
+  }
+};
+
+module.exports = { saveData, getTopRankedCompanies, updateData };

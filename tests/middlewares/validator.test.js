@@ -72,3 +72,14 @@ describe('validateParams', () => {
     expect(mockNext).toBeCalled();
   });
 });
+
+describe('validateQuery', () => {
+  it('should call next function', () => {
+    const mockReq = { query: { id: 1 } };
+    const mockRes = { status: jest.fn(), json: jest.fn() };
+    const mockNext = jest.fn();
+    const schema = joi.object({ id: joi.number().required() });
+    validator.validateQuery(schema)(mockReq, mockRes, mockNext);
+    expect(mockNext).toBeCalled();
+  });
+});

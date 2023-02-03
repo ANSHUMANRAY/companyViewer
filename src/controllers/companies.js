@@ -16,7 +16,7 @@ const postData = async (req, res) => {
 const getData = async (req, res) => {
   try {
     const { sector } = req.query;
-    const data = services.getTopRankedCompanies(sector);
+    const data = await services.getTopRankedCompanies(sector);
     res.status(200);
     res.json(data);
   } catch (error) {
@@ -30,4 +30,22 @@ const getData = async (req, res) => {
   }
 };
 
-module.exports = { postData, getData };
+const patchData = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    await services.updateData(data, id);
+    res.status(204);
+    res.json('updated successfully');
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      res.status(error.code);
+      res.json({ message: error.message });
+    } else {
+      res.status(500);
+      res.json({ message: 'Internal server error' });
+    }
+  }
+};
+
+module.exports = { postData, getData, patchData };

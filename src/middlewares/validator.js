@@ -17,4 +17,12 @@ const validateParams = (schema) => (req, res, next) => {
   } else { next(); }
 };
 
-module.exports = { validateRequest, validateParams };
+const validateQuery = (schema) => (req, res, next) => {
+  const validationResult = schema.validate(req.query);
+  if (validationResult.error) {
+    res.status(400);
+    res.json({ message: validationResult.error.message });
+  } else { next(); }
+};
+
+module.exports = { validateRequest, validateParams, validateQuery };
